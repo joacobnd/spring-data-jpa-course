@@ -22,37 +22,27 @@ public class Application {
                     "maria@gmail.com",
                     50));
 
+            Student maria2 = (new Student(
+                    "Maria",
+                    "Yamaguchi",
+                    "maria2@gmail.com",
+                    25));
+
             Student joaquin = (new Student(
                     "Joaquin",
-                    "GRandi",
+                    "Grandi",
                     "joaco@gmail.com",
                     30));
 
-            System.out.println("Adding Maria and Joaquin");
-            studentRepository.saveAll(List.of(maria,joaquin));
-
-            System.out.print("Number of students");
-            System.out.println(studentRepository.count());
+            studentRepository.saveAll(List.of(maria, maria2, joaquin));
 
             studentRepository
-                    .findById(2L)
-                    .ifPresentOrElse(System.out::println,
-                            () -> System.out.println("Student with ID 2 not found"));
+                    .findStudentByEmail("joaco@gmail.com")
+                    .ifPresentOrElse(System.out::println, () -> System.out.println("Student with email not found"));
 
-            studentRepository
-                    .findById(3L)
-                    .ifPresentOrElse(System.out::println,
-                            () -> System.out.println("Student with ID 3 not found"));
+            studentRepository.findStudentsByFirstNameEqualsAndAgeEquals("Maria", 50).forEach(System.out::println);
+            studentRepository.findStudentsByFirstNameEqualsAndAgeIsGreaterThan("Maria", 28).forEach(System.out::println);
 
-            System.out.println("Select all students");
-            List<Student> student = studentRepository.findAll();
-            student.forEach(System.out::println);
-
-            System.out.println("Delete Maria students");
-            studentRepository.deleteById(1L);
-
-            System.out.println("Numbers of students");
-            System.out.println(studentRepository.count());
         };
     }
 
