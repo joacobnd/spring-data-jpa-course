@@ -18,27 +18,29 @@ public class Application {
         return args -> {
             Student maria = (new Student(
                     "Maria",
-                    "Yamaguchi",
+                    "Pele",
                     "maria@gmail.com",
                     50));
 
             Student maria2 = (new Student(
                     "Maria",
-                    "Yamaguchi",
+                    "Catunga",
                     "maria2@gmail.com",
                     25));
 
             Student joaquin = (new Student(
-                    "Joaquin",
-                    "Grandi",
-                    "joaco@gmail.com",
-                    30));
+                    "Pedro",
+                    "Sanchez",
+                    "pedro@gmail.com",
+                    40));
 
             studentRepository.saveAll(List.of(maria, maria2, joaquin));
 
             studentRepository
                     .findStudentByEmail("joaco@gmail.com")
-                    .ifPresentOrElse(System.out::println, () -> System.out.println("Student with email not found"));
+                    .ifPresentOrElse(System.out::println, () -> {
+                        System.out.println("Student with email not found");
+                    });
 
             studentRepository.findStudentsByFirstNameEqualsAndAgeEquals("Maria", 50).forEach(System.out::println);
             studentRepository.findStudentsByFirstNameEqualsAndAgeIsGreaterThan("Maria", 28).forEach(System.out::println);
