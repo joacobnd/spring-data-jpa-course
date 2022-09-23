@@ -6,6 +6,11 @@ import static javax.persistence.GenerationType.SEQUENCE;
 
 
 @Entity(name = "Student")
+@Table(
+        name = "student",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "student_email_unique", columnNames = "email")
+        })
 public class Student {
     @Id
     @SequenceGenerator(
@@ -36,8 +41,7 @@ public class Student {
     @Column(
             name = "email",
             nullable = false,
-            columnDefinition = "TEXT",
-            unique = true
+            columnDefinition = "TEXT"
     )
     private String email;
     @Column(name = "age")
