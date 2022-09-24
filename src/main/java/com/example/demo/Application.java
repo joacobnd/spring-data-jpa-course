@@ -37,7 +37,7 @@ public class Application {
             studentRepository.saveAll(List.of(maria, maria2, joaquin));
 
 
-            System.out.println("QUERY SOLO");
+
             studentRepository
                     .findStudentByEmail("pedro@gmail.com")
                     .ifPresentOrElse(System.out::println, () -> {
@@ -47,7 +47,10 @@ public class Application {
 
 
             studentRepository.findStudentsByFirstNameEqualsAndAgeEquals("Maria", 50).forEach(System.out::println);
-            studentRepository.findStudentsByFirstNameEqualsAndAgeIsGreaterThan("Maria", 28).forEach(System.out::println);
+            System.out.println("USING JPA");
+            studentRepository.findStudentsByFirstNameEqualsAndAgeIsGreaterThan("Maria", 20).forEach(System.out::println);
+
+            System.out.println("NATIVE QUERY");
             studentRepository.findStudentsByFirstNameEqualsAndAgeIsGreaterThanNative("Maria", 20).forEach(System.out::println);  //Native Query
         };
     }
