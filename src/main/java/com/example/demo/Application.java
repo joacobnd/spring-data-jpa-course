@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.github.javafaker.Faker;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,41 +18,18 @@ public class Application {
     @Bean
     CommandLineRunner commandLineRunner(StudentRepository studentRepository){
         return args -> {
-            Student maria = (new Student(
-                    "Maria",
-                    "Pele",
-                    "maria@gmail.com",
-                    50));
-
-            Student maria2 = (new Student(
-                    "Maria",
-                    "Catunga",
-                    "maria2@gmail.com",
-                    25));
-
-            Student joaquin = (new Student(
-                    "Pedro",
-                    "Sanchez",
-                    "pedro@gmail.com",
-                    40));
-            studentRepository.saveAll(List.of(maria, maria2, joaquin));
-
-
-
-            studentRepository
-                    .findStudentByEmail("pedro@gmail.com")
-                    .ifPresentOrElse(System.out::println, () -> {
-                        System.out.println("Student with email not found");
-                    });
-
-
-
-            studentRepository.findStudentsByFirstNameEqualsAndAgeEquals("Maria", 50).forEach(System.out::println);
-            System.out.println("USING JPA");
-            studentRepository.findStudentsByFirstNameEqualsAndAgeIsGreaterThan("Maria", 20).forEach(System.out::println);
-
-            System.out.println("NATIVE QUERY");
-            studentRepository.findStudentsByFirstNameEqualsAndAgeIsGreaterThanNative("Maria", 20).forEach(System.out::println);  //Native Query
+            Faker faker = new Faker();
+            for (int i = 0; i < 20; i++) {
+                String firstName = faker.name().firstName();
+                String lastName = faker.name().lastName();
+                String email = String.format("%s.%s@amigoscode.edu", firstName, lastName);
+                Student student = new Student(
+                        firstName,
+                        lastName,
+                        email,
+                        faker.number().numberBetween(17, 55));
+                studentRepository.save(student);
+            }
         };
     }
 
