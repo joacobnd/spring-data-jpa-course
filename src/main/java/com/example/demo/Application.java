@@ -19,16 +19,39 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
     @Bean
-    CommandLineRunner commandLineRunner(StudentRepository studentRepository){
+    CommandLineRunner commandLineRunner(StudentRepository studentRepository,
+                                        StudentIdCardRepository studentIdCardRepository){
         return args -> {
-            generateRandomStudents(studentRepository);
+            Faker faker = new Faker();
+            String firstName = faker.name().firstName();
+            String lastName = faker.name().lastName();
+            String email = String.format("%s.%s@amigoscode.edu", firstName, lastName);
+            Student student = new Student(
+                    firstName,
+                    lastName,
+                    email,
+                    faker.number().numberBetween(17, 55));
 
-            PageRequest pageRequest = PageRequest.of(
-                    0,
-                    5,
-                    Sort.by("firstName").ascending());
-            Page<Student> page = studentRepository.findAll(pageRequest);
-            System.out.println(page);
+            StudentIdCard studentIdCard = new StudentIdCard(
+                    "123456789",
+                    student);
+
+            studentIdCardRepository.save(studentIdCard);
+
+            studentRepository.findById(1L).ifPresent(System.out::println);
+
+            studentIdCardRepository.findById(1L).ifPresent(System.out::println);
+
+            studentRepository.deleteById(1L);
+
+//            generateRandomStudents(studentRepository);
+//
+//            PageRequest pageRequest = PageRequest.of(
+//                    0,
+//                    5,
+//                    Sort.by("firstName").ascending());
+//            Page<Student> page = studentRepository.findAll(pageRequest);
+//            System.out.println(page);
         };
     }
 

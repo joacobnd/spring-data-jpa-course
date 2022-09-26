@@ -47,6 +47,13 @@ public class Student {
     @Column(name = "age")
     private Integer age;
 
+    @OneToOne(
+            mappedBy = "student",
+            orphanRemoval = true
+    )
+    private StudentIdCard studentIdCard;
+
+
     public Student() {
     }
 
