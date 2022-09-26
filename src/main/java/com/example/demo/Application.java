@@ -46,19 +46,13 @@ public class Application {
 
             studentIdCardRepository.save(studentIdCard);
 
+            studentRepository.findById(1L).ifPresent(s -> {
+                System.out.println("fetch book lazy...");
+                List<Book> books = student.getBooks();
+                books.forEach(book -> System.out.println(s.getFirstName() + " borrowed " + book.getBookName()));
+            } );
 
 
-
-
-//            generateRandomStudents(studentRepository);
-//
-//            PageRequest pageRequest = PageRequest.of(
-//                    0,
-//                    5,
-//                    Sort.by("firstName").ascending());
-//            Page<Student> page = studentRepository.findAll(pageRequest);
-//            System.out.println(page);
-        };
     }
 
     private static void extracted(StudentRepository studentRepository) {
