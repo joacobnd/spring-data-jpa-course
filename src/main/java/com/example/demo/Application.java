@@ -21,7 +21,7 @@ public class Application {
     }
     @Bean
     CommandLineRunner commandLineRunner(StudentRepository studentRepository,
-                                        StudentIdCardRepository studentIdCardRepository){
+                                        StudentIdCardRepository studentIdCardRepository) {
         return args -> {
             Faker faker = new Faker();
             String firstName = faker.name().firstName();
@@ -39,20 +39,22 @@ public class Application {
             student.addBook(new Book("Spring Data JPA", LocalDateTime.now().minusYears(1)));
 
 
-
             StudentIdCard studentIdCard = new StudentIdCard(
                     "123456789",
                     student);
 
-            studentIdCardRepository.save(studentIdCard);
+            student.setStudentIdCard(studentIdCard);
+
+            studentRepository.save(student);
 
             studentRepository.findById(1L).ifPresent(s -> {
                 System.out.println("fetch book lazy...");
                 List<Book> books = student.getBooks();
                 books.forEach(book -> System.out.println(s.getFirstName() + " borrowed " + book.getBookName()));
-            } );
+            });
 
 
+        };
     }
 
     private static void extracted(StudentRepository studentRepository) {
